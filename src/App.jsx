@@ -7,6 +7,7 @@ import Users from './pages/Users'
 import AdminLayout from './layouts/AdminLayout'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
+import Reports from './pages/Reports'
 
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -33,6 +34,7 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="users" element={<Users />} />
+            <Route path="reports" element={<Reports />} />
           </Route>
         </Routes>
       </BrowserRouter>
