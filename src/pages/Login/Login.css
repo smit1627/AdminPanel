@@ -1,0 +1,129 @@
+/* Global Variables */
+:root {
+    --primary-color: #0099ff;
+    --primary-hover: #007acc;
+    --danger-color: #f44336;
+    --dark-color: #1b1b1b;
+    --light-bg: #f8f9fa;
+    --white: #fff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Auth Wrapper */
+.auth-wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    padding: 2rem;
+}
+
+/* Auth Container */
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+}
+
+/* Auth Card */
+.auth-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+}
+
+/* Auth Header */
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: #6c757d;
+}
+
+/* Auth Form */
+.auth-form .input-group {
+    margin-bottom: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.auth-form .input-group-text {
+    background: var(--white);
+    border: none;
+    color: #6c757d;
+    padding: 0.75rem 1rem;
+}
+
+.auth-form .form-control {
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+
+.auth-form .form-control:focus {
+    box-shadow: none;
+}
+
+/* Error Message */
+.error-message {
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Button */
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+/* Auth Footer */
+.auth-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.auth-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .auth-wrapper {
+        padding: 1rem;
+    }
+}
