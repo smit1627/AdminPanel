@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SearchIcon, PlusIcon, PencilIcon, EyeIcon, TrashIcon, XIcon } from 'lucide-react';
-import '../App.css';
+import '../Centers/Centers.css';
 
 const Centers = () => {
   const [searchQuery, setSearchQuery] = useState('');

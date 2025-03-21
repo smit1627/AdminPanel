@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-
+import '../Register/Register.css'
 const Register = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');

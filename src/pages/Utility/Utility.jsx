@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Table, 
-  Button, 
-  Input, 
-  Modal, 
-  Form, 
+import {
+  Table,
+  Button,
+  Input,
+  Modal,
+  Form,
   Select,
   message,
   Badge,
   Tooltip,
   Popconfirm
 } from 'antd';
-import { 
-  PlusOutlined, 
-  SearchOutlined, 
-  EditOutlined, 
+import {
+  PlusOutlined,
+  SearchOutlined,
+  EditOutlined,
   DeleteOutlined,
   ReloadOutlined,
   ExportOutlined,
@@ -22,7 +22,7 @@ import {
   CheckCircleFilled,
   CloseCircleFilled
 } from '@ant-design/icons';
-import '../App.css';
+import '../Utility/Utility.css';
 
 const Utility = () => {
   // State management
@@ -48,7 +48,7 @@ const Utility = () => {
       // const response = await api.get('/utilities', { params: { page, pageSize, search: searchQuery } });
       // setUtilities(response.data.items);
       // setPagination({...pagination, total: response.data.total, current: page})
-      
+
       // Mock data for demonstration
       setTimeout(() => {
         // Sample data - replace with your API response
@@ -59,17 +59,17 @@ const Utility = () => {
           { id: 4, clientName: 'Client D', utilityName: 'Internet', code1: 'NET004', code2: 'REG101', active: true, lastUpdated: '2025-03-07' },
           { id: 5, clientName: 'Client E', utilityName: 'Waste Management', code1: 'WST005', code2: 'REG112', active: false, lastUpdated: '2025-03-06' },
         ];
-        
-        const filteredData = mockData.filter(item => 
-          searchQuery ? 
-            item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+
+        const filteredData = mockData.filter(item =>
+          searchQuery ?
+            item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             item.utilityName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.code1.toLowerCase().includes(searchQuery.toLowerCase()) : 
+            item.code1.toLowerCase().includes(searchQuery.toLowerCase()) :
             true
         );
-        
+
         setUtilities(filteredData);
-        setPagination({...pagination, total: filteredData.length, current: page});
+        setPagination({ ...pagination, total: filteredData.length, current: page });
         setLoading(false);
       }, 500);
     } catch (error) {
@@ -111,10 +111,10 @@ const Utility = () => {
         // const response = await api.post('/utilities', values);
         message.success('Utility created successfully');
       }
-      
+
       // Refresh the list
       fetchUtilities(pagination.current, pagination.pageSize, searchText);
-      
+
       // Close modal and reset form
       setIsModalVisible(false);
       form.resetFields();
@@ -205,8 +205,8 @@ const Utility = () => {
       dataIndex: 'active',
       key: 'active',
       render: (active) => (
-        <Badge 
-          status={active ? "success" : "error"} 
+        <Badge
+          status={active ? "success" : "error"}
           text={
             <span className={active ? "text-green-600" : "text-red-600"}>
               {active ? (
@@ -236,17 +236,17 @@ const Utility = () => {
       render: (_, record) => (
         <div className="flex space-x-2">
           <Tooltip title="View Details">
-            <Button 
-              type="text" 
-              icon={<EyeOutlined />} 
+            <Button
+              type="text"
+              icon={<EyeOutlined />}
               className="text-blue-500 hover:text-blue-700"
               onClick={() => handleView(record)}
             />
           </Tooltip>
           <Tooltip title="Edit">
-            <Button 
-              type="text" 
-              icon={<EditOutlined />} 
+            <Button
+              type="text"
+              icon={<EditOutlined />}
               className="text-green-500 hover:text-green-700"
               onClick={() => handleEdit(record)}
             />
@@ -259,9 +259,9 @@ const Utility = () => {
               cancelText="No"
               placement="left"
             >
-              <Button 
-                type="text" 
-                icon={<DeleteOutlined />} 
+              <Button
+                type="text"
+                icon={<DeleteOutlined />}
                 className="text-red-500 hover:text-red-700"
               />
             </Popconfirm>
@@ -278,16 +278,16 @@ const Utility = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-blue-600">Manage Utilities</h1>
           <div className="flex items-center space-x-3">
-          <Tooltip title="Refresh">
-              <Button 
-                icon={<ReloadOutlined />} 
+            <Tooltip title="Refresh">
+              <Button
+                icon={<ReloadOutlined />}
                 onClick={handleRefresh}
                 className="refresh-button me-3"
               />
             </Tooltip>
             <div className="search-box">
-              <Input 
-                placeholder="Search by client, utility or code..." 
+              <Input
+                placeholder="Search by client, utility or code..."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onPressEnter={handleSearch}
@@ -295,17 +295,17 @@ const Utility = () => {
                 className="search-input me-3"
                 allowClear
               />
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 onClick={handleSearch}
                 className="search-button me-5"
               >
                 Search
               </Button>
             </div>
-            <Button 
-              type="primary" 
-              icon={<PlusOutlined />} 
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
               onClick={() => showModal()}
               className="create-button px-4 py-3"
             >
@@ -332,7 +332,7 @@ const Utility = () => {
           scroll={{ x: 'max-content' }}
         />
       </div>
-      
+
       {/* Create/Edit Utility Modal */}
       <Modal
         title={editingRecord ? "Edit Utility" : "Create New Utility"}
@@ -358,7 +358,7 @@ const Utility = () => {
             >
               <Input placeholder="Enter client name" className="form-input" />
             </Form.Item>
-            
+
             <Form.Item
               name="utilityName"
               label="Utility Name"
@@ -367,7 +367,7 @@ const Utility = () => {
             >
               <Input placeholder="Enter utility name" className="form-input" />
             </Form.Item>
-            
+
             <Form.Item
               name="code1"
               label="Code 1"
@@ -375,14 +375,14 @@ const Utility = () => {
             >
               <Input placeholder="Enter code 1" className="form-input" />
             </Form.Item>
-            
+
             <Form.Item
               name="code2"
               label="Code 2"
             >
               <Input placeholder="Enter code 2 (optional)" className="form-input" />
             </Form.Item>
-            
+
             <Form.Item
               name="active"
               label="Status"
@@ -394,7 +394,7 @@ const Utility = () => {
               </Select>
             </Form.Item>
           </div>
-          
+
           <div className="flex justify-end space-x-3 mt-6">
             <Button onClick={handleCancel} className="cancel-button">
               Cancel

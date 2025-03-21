@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faUserPlus, faSearch, faFilter, faTimes, faSave, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-
+import '../Users/Users.css';
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -59,11 +59,11 @@ const Users = () => {
   // Handle saving edited user
   const handleSaveEdit = () => {
     if (!editedUser) return;
-    
-    const updatedUsers = users.map(user => 
+
+    const updatedUsers = users.map(user =>
       user.id === editedUser.id ? editedUser : user
     );
-    
+
     setUsers(updatedUsers);
     try {
       localStorage.setItem('users', JSON.stringify(updatedUsers));
@@ -77,9 +77,9 @@ const Users = () => {
   // Handle user click to open sidebar
   const handleUserClick = (user) => {
     if (!user) return;
-    
+
     setSelectedUser(user);
-    setEditedUser({...user});
+    setEditedUser({ ...user });
     setShowSidebar(true);
     setEditMode(false);
   };
@@ -95,7 +95,7 @@ const Users = () => {
   // Handle delete user
   const handleDeleteUser = (userId) => {
     if (!userId) return;
-    
+
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
       const updatedUsers = users.filter(user => user.id !== userId);
@@ -105,7 +105,7 @@ const Users = () => {
       } catch (error) {
         console.error("Error saving users to localStorage:", error);
       }
-      
+
       // Close sidebar if the deleted user was selected
       if (selectedUser && selectedUser.id === userId) {
         closeSidebar();
@@ -116,7 +116,7 @@ const Users = () => {
   // Filter users based on search term
   const filteredUsers = users.filter(user => {
     if (!user) return false;
-    
+
     const userName = user.name || '';
     const userEmail = user.email || '';
 
@@ -194,8 +194,8 @@ const Users = () => {
                 {filteredUsers.length > 0 ? (
                   filteredUsers.map(user => (
                     user && (
-                      <tr 
-                        key={user.id || Math.random()} 
+                      <tr
+                        key={user.id || Math.random()}
                         className="hover:bg-gray-50 transition cursor-pointer"
                         onClick={() => handleUserClick(user)}
                       >
@@ -226,7 +226,7 @@ const Users = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex gap-2">
-                            <button 
+                            <button
                               className="text-blue-600 hover:text-blue-800 transition p-1"
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -236,7 +236,7 @@ const Users = () => {
                             >
                               <FontAwesomeIcon icon={faEdit} />
                             </button>
-                            <button 
+                            <button
                               className="text-red-600 hover:text-red-800 transition p-1"
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -358,7 +358,7 @@ const Users = () => {
               <h2 className="text-xl font-bold text-gray-800">
                 {editMode ? 'Edit User' : 'User Details'}
               </h2>
-              <button 
+              <button
                 className="text-gray-500 hover:text-gray-700 focus:outline-none"
                 onClick={closeSidebar}
               >
@@ -469,7 +469,7 @@ const Users = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="border-b border-gray-200 py-4">
                     <h4 className="text-sm font-medium text-gray-500 uppercase mb-2">Account Details</h4>
                     <div className="grid grid-cols-2 gap-4">
@@ -496,7 +496,7 @@ const Users = () => {
                 </div>
               )}
             </div>
-            
+
             {/* Sidebar Footer */}
             <div className="border-t border-gray-200 p-4">
               <div className="flex justify-between">
@@ -506,7 +506,7 @@ const Users = () => {
                       className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition"
                       onClick={() => {
                         setEditMode(false);
-                        setEditedUser(selectedUser ? {...selectedUser} : null);
+                        setEditedUser(selectedUser ? { ...selectedUser } : null);
                       }}
                     >
                       Cancel

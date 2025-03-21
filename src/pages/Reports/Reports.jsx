@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
+import {
+  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { 
-  Download, Calendar, Filter, RefreshCw, ChevronDown, 
-  Grid, List, BarChart2, PieChart as PieChartIcon 
+import {
+  Download, Calendar, Filter, RefreshCw, ChevronDown,
+  Grid, List, BarChart2, PieChart as PieChartIcon
 } from 'lucide-react';
 import { DatePicker, Select, Tabs, Card, Statistic, Table, Button, Dropdown, Menu } from 'antd';
 import moment from 'moment';
 
-import '../App.css';
+import '../Reports/Reports.css';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -23,7 +23,7 @@ const Reports = () => {
   const [programs, setPrograms] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // State for filters and date ranges
   const [dateRange, setDateRange] = useState([moment().subtract(30, 'days'), moment()]);
   const [viewType, setViewType] = useState('grid');
@@ -31,7 +31,7 @@ const Reports = () => {
   const [filterUtility, setFilterUtility] = useState('all');
   const [filterCenter, setFilterCenter] = useState('all');
   const [filterProgram, setFilterProgram] = useState('all');
-  
+
   // Derived data for charts
   const [utilityData, setUtilityData] = useState([]);
   const [centerData, setCenterData] = useState([]);
@@ -41,20 +41,20 @@ const Reports = () => {
   // Load data from localStorage when component mounts
   useEffect(() => {
     setLoading(true);
-    
+
     try {
       // Load utilities
       const storedUtilities = JSON.parse(localStorage.getItem('utilities') || '[]');
       setUtilities(storedUtilities);
-      
+
       // Load centers
       const storedCenters = JSON.parse(localStorage.getItem('centers') || '[]');
       setCenters(storedCenters);
-      
+
       // Load programs
       const storedPrograms = JSON.parse(localStorage.getItem('programs') || '[]');
       setPrograms(storedPrograms);
-      
+
       // Load users
       const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
       setUsers(storedUsers);
@@ -196,8 +196,8 @@ const Reports = () => {
     const startDate = moment(dateRange[0]);
     const endDate = moment(dateRange[1]);
     const daysDiff = endDate.diff(startDate, 'days');
-    
-    for (let i = 0; i <= daysDiff; i++) {
+
+    for (let i = 0;i <= daysDiff;i++) {
       const date = moment(startDate).add(i, 'days');
       data.push({
         date: date.format('YYYY-MM-DD'),
@@ -205,7 +205,7 @@ const Reports = () => {
         cost: Math.floor(Math.random() * 200) + 100
       });
     }
-    
+
     return data;
   };
 
@@ -214,7 +214,7 @@ const Reports = () => {
   // Generate mock program performance data
   const generateProgramPerformanceData = () => {
     if (!programs || programs.length === 0) return [];
-    
+
     return programs.slice(0, 5).map(program => ({
       name: program.programName,
       performance: Math.floor(Math.random() * 100),
@@ -230,7 +230,8 @@ const Reports = () => {
     { title: 'Name', dataIndex: 'name', key: 'name' },
     { title: 'State', dataIndex: 'state', key: 'state' },
     { title: 'Type', dataIndex: 'type', key: 'type' },
-    { title: 'Status', dataIndex: 'status', key: 'status', 
+    {
+      title: 'Status', dataIndex: 'status', key: 'status',
       render: status => (
         <span className={`status-badge ${status ? 'active' : 'inactive'}`}>
           {status ? 'Active' : 'Inactive'}
@@ -244,7 +245,8 @@ const Reports = () => {
     { title: 'City', dataIndex: 'city', key: 'city' },
     { title: 'State', dataIndex: 'state', key: 'state' },
     { title: 'Client', dataIndex: 'client', key: 'client' },
-    { title: 'Status', dataIndex: 'active', key: 'active', 
+    {
+      title: 'Status', dataIndex: 'active', key: 'active',
       render: active => (
         <span className={`status-badge ${active ? 'active' : 'inactive'}`}>
           {active ? 'Active' : 'Inactive'}
@@ -257,10 +259,12 @@ const Reports = () => {
     { title: 'Utility Name', dataIndex: 'utilityName', key: 'utilityName' },
     { title: 'Program Name', dataIndex: 'programName', key: 'programName' },
     { title: 'Start Date', dataIndex: 'startDate', key: 'startDate' },
-    { title: 'End Date', dataIndex: 'endDate', key: 'endDate', 
+    {
+      title: 'End Date', dataIndex: 'endDate', key: 'endDate',
       render: endDate => endDate || '—'
     },
-    { title: 'Status', dataIndex: 'active', key: 'active', 
+    {
+      title: 'Status', dataIndex: 'active', key: 'active',
       render: active => (
         <span className={`status-badge ${active ? 'active' : 'inactive'}`}>
           {active ? 'Active' : 'Inactive'}
@@ -273,7 +277,8 @@ const Reports = () => {
     { title: 'Name', dataIndex: 'name', key: 'name' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: 'Role', dataIndex: 'role', key: 'role' },
-    { title: 'Status', dataIndex: 'status', key: 'status', 
+    {
+      title: 'Status', dataIndex: 'status', key: 'status',
       render: status => (
         <span className={`status-badge ${status === 'Active' ? 'active' : 'inactive'}`}>
           {status || 'Unknown'}
@@ -287,9 +292,9 @@ const Reports = () => {
     <Menu>
       <Menu.Item key="1">
         <h4>Filter by Utility</h4>
-        <Select 
-          style={{ width: 200 }} 
-          value={filterUtility} 
+        <Select
+          style={{ width: 200 }}
+          value={filterUtility}
           onChange={setFilterUtility}
         >
           <Option value="all">All Utilities</Option>
@@ -300,9 +305,9 @@ const Reports = () => {
       </Menu.Item>
       <Menu.Item key="2">
         <h4>Filter by Center</h4>
-        <Select 
-          style={{ width: 200 }} 
-          value={filterCenter} 
+        <Select
+          style={{ width: 200 }}
+          value={filterCenter}
           onChange={setFilterCenter}
         >
           <Option value="all">All Centers</Option>
@@ -313,9 +318,9 @@ const Reports = () => {
       </Menu.Item>
       <Menu.Item key="3">
         <h4>Filter by Program</h4>
-        <Select 
-          style={{ width: 200 }} 
-          value={filterProgram} 
+        <Select
+          style={{ width: 200 }}
+          value={filterProgram}
           onChange={setFilterProgram}
         >
           <Option value="all">All Programs</Option>
@@ -343,14 +348,14 @@ const Reports = () => {
           <h1>Reports & Analytics</h1>
           <p>Comprehensive insights and data visualization</p>
         </div>
-        
+
         <div className="actions-section">
-          <RangePicker 
+          <RangePicker
             value={dateRange}
             onChange={handleDateRangeChange}
             className="date-picker"
           />
-          
+
           <Dropdown overlay={filterMenu} trigger={['click']}>
             <Button className="filter-button">
               <Filter size={16} />
@@ -358,9 +363,9 @@ const Reports = () => {
               <ChevronDown size={16} />
             </Button>
           </Dropdown>
-          
-          <Button 
-            type="primary" 
+
+          <Button
+            type="primary"
             icon={<Download size={16} />}
             onClick={handleExportReport}
             className="export-button"
@@ -369,16 +374,16 @@ const Reports = () => {
           </Button>
         </div>
       </div>
-      
+
       <div className="view-toggle">
-        <Button 
+        <Button
           type={viewType === 'grid' ? 'primary' : 'default'}
           icon={<Grid size={16} />}
           onClick={() => setViewType('grid')}
         >
           Grid
         </Button>
-        <Button 
+        <Button
           type={viewType === 'list' ? 'primary' : 'default'}
           icon={<List size={16} />}
           onClick={() => setViewType('list')}
@@ -386,20 +391,20 @@ const Reports = () => {
           List
         </Button>
       </div>
-      
+
       <div className="summary-stats">
         {summaryStats.map((stat, index) => (
           <Card key={index} className="stat-card">
             {renderIcon(stat.icon)}
-            <Statistic 
-              title={stat.title} 
-              value={stat.value} 
+            <Statistic
+              title={stat.title}
+              value={stat.value}
               className="stat-value"
             />
           </Card>
         ))}
       </div>
-      
+
       <Tabs activeKey={activeTab} onChange={setActiveTab} className="report-tabs">
         <TabPane tab="Overview" key="overview">
           <div className="overview-section">
@@ -426,7 +431,7 @@ const Reports = () => {
                   </PieChart>
                 </ResponsiveContainer>
               </Card>
-              
+
               <Card title="Centers by Client" className="chart-card">
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={centerData}>
@@ -440,7 +445,7 @@ const Reports = () => {
                 </ResponsiveContainer>
               </Card>
             </div>
-            
+
             <div className="chart-row">
               <Card title="Programs by Utility" className="chart-card">
                 <ResponsiveContainer width="100%" height={300}>
@@ -454,7 +459,7 @@ const Reports = () => {
                   </BarChart>
                 </ResponsiveContainer>
               </Card>
-              
+
               <Card title="Users by Role" className="chart-card">
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
@@ -478,7 +483,7 @@ const Reports = () => {
                 </ResponsiveContainer>
               </Card>
             </div>
-            
+
             <Card title="Usage Trends" className="full-width-card">
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={timeSeriesData}>
@@ -488,25 +493,25 @@ const Reports = () => {
                   <YAxis yAxisId="right" orientation="right" />
                   <Tooltip />
                   <Legend />
-                  <Line 
+                  <Line
                     yAxisId="left"
-                    type="monotone" 
-                    dataKey="usage" 
-                    stroke="#8884d8" 
-                    name="Usage (kWh)" 
-                    activeDot={{ r: 8 }} 
+                    type="monotone"
+                    dataKey="usage"
+                    stroke="#8884d8"
+                    name="Usage (kWh)"
+                    activeDot={{ r: 8 }}
                   />
-                  <Line 
+                  <Line
                     yAxisId="right"
-                    type="monotone" 
-                    dataKey="cost" 
-                    stroke="#82ca9d" 
-                    name="Cost ($)" 
+                    type="monotone"
+                    dataKey="cost"
+                    stroke="#82ca9d"
+                    name="Cost ($)"
                   />
                 </LineChart>
               </ResponsiveContainer>
             </Card>
-            
+
             <Card title="Program Performance" className="full-width-card">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={programPerformanceData}>
@@ -523,7 +528,7 @@ const Reports = () => {
             </Card>
           </div>
         </TabPane>
-        
+
         <TabPane tab="Utilities" key="utilities">
           <Card title="Utilities Report" className="report-detail-card">
             <div className="report-summary">
@@ -544,7 +549,7 @@ const Reports = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="chart-section">
               <h3>Utilities by State</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -568,19 +573,19 @@ const Reports = () => {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="table-section">
               <h3>Utilities List</h3>
-              <Table 
-                dataSource={utilities} 
-                columns={utilitiesColumns} 
+              <Table
+                dataSource={utilities}
+                columns={utilitiesColumns}
                 rowKey="id"
                 pagination={{ pageSize: 10 }}
               />
             </div>
           </Card>
         </TabPane>
-        
+
         <TabPane tab="Centers" key="centers">
           <Card title="Centers Report" className="report-detail-card">
             <div className="report-summary">
@@ -601,7 +606,7 @@ const Reports = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="chart-section">
               <h3>Centers by Client</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -615,19 +620,19 @@ const Reports = () => {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="table-section">
               <h3>Centers List</h3>
-              <Table 
-                dataSource={centers} 
-                columns={centersColumns} 
+              <Table
+                dataSource={centers}
+                columns={centersColumns}
                 rowKey="id"
                 pagination={{ pageSize: 10 }}
               />
             </div>
           </Card>
         </TabPane>
-        
+
         <TabPane tab="Programs" key="programs">
           <Card title="Programs Report" className="report-detail-card">
             <div className="report-summary">
@@ -648,7 +653,7 @@ const Reports = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="chart-section">
               <h3>Programs by Utility</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -662,7 +667,7 @@ const Reports = () => {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="chart-section">
               <h3>Program Performance</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -678,19 +683,19 @@ const Reports = () => {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="table-section">
               <h3>Programs List</h3>
-              <Table 
-                dataSource={programs} 
-                columns={programsColumns} 
+              <Table
+                dataSource={programs}
+                columns={programsColumns}
                 rowKey="id"
                 pagination={{ pageSize: 10 }}
               />
             </div>
           </Card>
         </TabPane>
-        
+
         <TabPane tab="Users" key="users">
           <Card title="Users Report" className="report-detail-card">
             <div className="report-summary">
@@ -711,7 +716,7 @@ const Reports = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="chart-section">
               <h3>Users by Role</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -735,12 +740,12 @@ const Reports = () => {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="table-section">
               <h3>Users List</h3>
-              <Table 
-                dataSource={users} 
-                columns={usersColumns} 
+              <Table
+                dataSource={users}
+                columns={usersColumns}
                 rowKey="id"
                 pagination={{ pageSize: 10 }}
               />

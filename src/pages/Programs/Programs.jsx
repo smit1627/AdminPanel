@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Plus, Edit, List, Eye, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Trash2 } from 'lucide-react';
-import '../App.css';
+import '../Programs/Programs.css';
 
 const Programs = () => {
   const [programs, setPrograms] = useState([
@@ -29,14 +29,14 @@ const Programs = () => {
       ]
     }
   ]);
-  
+
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showViewDetailsModal, setShowViewDetailsModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const [newProgram, setNewProgram] = useState({
     utilityName: '',
     programName: '',
@@ -44,7 +44,7 @@ const Programs = () => {
     endDate: '',
     ratePlanDetails: []
   });
-  
+
   // Handle Create Program
   const handleCreateProgram = () => {
     setNewProgram({
@@ -57,7 +57,7 @@ const Programs = () => {
     setShowCreateForm(true);
     setIsEditing(false);
   };
-  
+
   // Handle Edit Program
   const handleEditProgram = (program) => {
     setNewProgram({
@@ -72,32 +72,32 @@ const Programs = () => {
     setShowCreateForm(true);
     setIsEditing(true);
   };
-  
+
   // Handle View Details
   const handleViewDetails = (program) => {
     setSelectedProgram(program);
     setShowViewDetailsModal(true);
   };
-  
+
   // Handle Preview
   const handlePreview = (program) => {
     setSelectedProgram(program);
     setShowPreviewModal(true);
   };
-  
+
   // Handle Delete
   const handleDelete = (programId) => {
     if (window.confirm('Are you sure you want to delete this program?')) {
       setPrograms(programs.filter(program => program.id !== programId));
     }
   };
-  
+
   // Handle Go Back
   const handleGoBack = () => {
     setShowCreateForm(false);
     setIsEditing(false);
   };
-  
+
   // Handle Add Rate Plan
   const handleAddRatePlan = () => {
     setNewProgram({
@@ -105,7 +105,7 @@ const Programs = () => {
       ratePlanDetails: [...newProgram.ratePlanDetails, { range: '', rate: '', unit: '' }]
     });
   };
-  
+
   // Handle Remove Rate Plan
   const handleRemoveRatePlan = (index) => {
     const updatedRatePlans = [...newProgram.ratePlanDetails];
@@ -115,7 +115,7 @@ const Programs = () => {
       ratePlanDetails: updatedRatePlans
     });
   };
-  
+
   // Handle Rate Plan Changes
   const handleRatePlanChange = (index, field, value) => {
     const updatedRatePlans = [...newProgram.ratePlanDetails];
@@ -125,7 +125,7 @@ const Programs = () => {
       ratePlanDetails: updatedRatePlans
     });
   };
-  
+
   // Handle Form Changes
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -134,14 +134,14 @@ const Programs = () => {
       [name]: value
     });
   };
-  
+
   // Handle Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (isEditing) {
       // Update existing program
-      setPrograms(programs.map(program => 
+      setPrograms(programs.map(program =>
         program.id === newProgram.id ? newProgram : program
       ));
     } else {
@@ -149,35 +149,35 @@ const Programs = () => {
       const newId = Math.max(...programs.map(p => p.id)) + 1;
       setPrograms([...programs, { ...newProgram, id: newId, active: true }]);
     }
-    
+
     setShowCreateForm(false);
     setIsEditing(false);
   };
-  
+
   // Format date for input fields
   const formatDateForInput = (dateString) => {
     if (!dateString) return '';
-    
+
     const parts = dateString.split('/');
     if (parts.length === 3) {
       return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
     }
     return dateString;
   };
-  
+
   // Format date for display
   const formatDateForDisplay = (dateString) => {
     if (!dateString) return '';
-    
+
     if (dateString.includes('-')) {
       const [year, month, day] = dateString.split('-');
       return `${month}/${day}/${year}`;
     }
     return dateString;
   };
-  
+
   // Filter programs based on search term
-  const filteredPrograms = programs.filter(program => 
+  const filteredPrograms = programs.filter(program =>
     program.utilityName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     program.programName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -210,7 +210,7 @@ const Programs = () => {
                 </button>
               </div>
             </div>
-            
+
             {/* Table */}
             <div className="table-responsive">
               <table className="table table-hover">
@@ -238,29 +238,29 @@ const Programs = () => {
                       </td>
                       <td>
                         <div className="action-buttons">
-                          <button 
-                            className="btn btn-sm btn-outline-primary me-1" 
+                          <button
+                            className="btn btn-sm btn-outline-primary me-1"
                             title="Edit"
                             onClick={() => handleEditProgram(program)}
                           >
                             <Edit size={18} />
                           </button>
-                          <button 
-                            className="btn btn-sm btn-outline-primary me-1" 
+                          <button
+                            className="btn btn-sm btn-outline-primary me-1"
                             title="View Details"
                             onClick={() => handleViewDetails(program)}
                           >
                             <List size={18} />
                           </button>
-                          <button 
-                            className="btn btn-sm btn-outline-primary me-1" 
+                          <button
+                            className="btn btn-sm btn-outline-primary me-1"
                             title="Preview"
                             onClick={() => handlePreview(program)}
                           >
                             <Eye size={18} />
                           </button>
-                          <button 
-                            className="btn btn-sm btn-outline-danger" 
+                          <button
+                            className="btn btn-sm btn-outline-danger"
                             title="Delete"
                             onClick={() => handleDelete(program.id)}
                           >
@@ -273,7 +273,7 @@ const Programs = () => {
                 </tbody>
               </table>
             </div>
-            
+
             {/* Pagination */}
             <div className="card-footer d-flex justify-content-between align-items-center">
               <div className="pagination-info">
@@ -317,7 +317,7 @@ const Programs = () => {
               <h2 className="form-title">{isEditing ? 'Edit Program' : 'Create Program'}</h2>
               <p className="form-subtitle">{isEditing ? 'Edit existing program' : 'Create new program'}</p>
             </div>
-            
+
             {/* Create/Edit Form */}
             <div className="card-body">
               <form onSubmit={handleSubmit} className="create-form">
@@ -327,8 +327,8 @@ const Programs = () => {
                       <label className="form-label">
                         Utility <span className="text-danger">*</span>
                       </label>
-                      <select 
-                        className="form-select" 
+                      <select
+                        className="form-select"
                         required
                         name="utilityName"
                         value={newProgram.utilityName}
@@ -340,7 +340,7 @@ const Programs = () => {
                       </select>
                     </div>
                   </div>
-                  
+
                   <div className="col-md-6">
                     <div className="form-group mb-3">
                       <label className="form-label">
@@ -356,7 +356,7 @@ const Programs = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="col-md-6">
                     <div className="form-group mb-3">
                       <label className="form-label">
@@ -375,7 +375,7 @@ const Programs = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="col-md-6">
                     <div className="form-group mb-3">
                       <label className="form-label">
@@ -393,14 +393,14 @@ const Programs = () => {
                       />
                     </div>
                   </div>
-                  
+
                   {isEditing && (
                     <div className="col-md-6">
                       <div className="form-group mb-3">
                         <label className="form-label">
                           Status
                         </label>
-                        <select 
+                        <select
                           className="form-select"
                           name="active"
                           value={newProgram.active}
@@ -416,7 +416,7 @@ const Programs = () => {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Rate Plan Details */}
                 <div className="rate-plan-section">
                   <h3 className="section-title mb-3">Rate Plan Details</h3>
@@ -452,7 +452,7 @@ const Programs = () => {
                                 />
                               </td>
                               <td>
-                                <select 
+                                <select
                                   className="form-select"
                                   value={detail.unit}
                                   onChange={(e) => handleRatePlanChange(index, 'unit', e.target.value)}
@@ -463,8 +463,8 @@ const Programs = () => {
                                 </select>
                               </td>
                               <td>
-                                <button 
-                                  type="button" 
+                                <button
+                                  type="button"
                                   className="btn btn-sm btn-danger"
                                   onClick={() => handleRemoveRatePlan(index)}
                                 >
@@ -483,7 +483,7 @@ const Programs = () => {
                       </tbody>
                     </table>
                   </div>
-                  
+
                   <button
                     type="button"
                     onClick={handleAddRatePlan}
@@ -492,7 +492,7 @@ const Programs = () => {
                     <Plus size={16} className="me-2" /> Add Rate Plan Detail
                   </button>
                 </div>
-                
+
                 {/* Form Actions */}
                 <div className="form-actions mt-4 pt-3 border-top">
                   <button
@@ -514,7 +514,7 @@ const Programs = () => {
           </div>
         </div>
       )}
-      
+
       {/* View Details Modal */}
       {showViewDetailsModal && selectedProgram && (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
@@ -522,9 +522,9 @@ const Programs = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Program Details</h5>
-                <button 
-                  type="button" 
-                  className="btn-close" 
+                <button
+                  type="button"
+                  className="btn-close"
                   onClick={() => setShowViewDetailsModal(false)}
                 ></button>
               </div>
@@ -553,7 +553,7 @@ const Programs = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <h6 className="mt-4 mb-3">Rate Plan Details</h6>
                 <div className="table-responsive">
                   <table className="table table-bordered">
@@ -583,9 +583,9 @@ const Programs = () => {
                 </div>
               </div>
               <div className="modal-footer">
-                <button 
-                  type="button" 
-                  className="btn btn-secondary" 
+                <button
+                  type="button"
+                  className="btn btn-secondary"
                   onClick={() => setShowViewDetailsModal(false)}
                 >
                   Close
@@ -595,7 +595,7 @@ const Programs = () => {
           </div>
         </div>
       )}
-      
+
       {/* Preview Modal */}
       {showPreviewModal && selectedProgram && (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
@@ -603,9 +603,9 @@ const Programs = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Program Preview</h5>
-                <button 
-                  type="button" 
-                  className="btn-close" 
+                <button
+                  type="button"
+                  className="btn-close"
                   onClick={() => setShowPreviewModal(false)}
                 ></button>
               </div>
@@ -628,7 +628,7 @@ const Programs = () => {
                         <p>{selectedProgram.startDate} - {selectedProgram.endDate || 'Ongoing'}</p>
                       </div>
                     </div>
-                    
+
                     <h5 className="mt-4">Rate Structure</h5>
                     <div className="table-responsive mt-3">
                       <table className="table table-striped">
@@ -650,7 +650,7 @@ const Programs = () => {
                         </tbody>
                       </table>
                     </div>
-                    
+
                     <div className="mt-4 p-3 bg-light rounded">
                       <h6>Program Notes</h6>
                       <p>This program is designed for {selectedProgram.utilityName} customers and provides tiered pricing based on usage.</p>
@@ -659,9 +659,9 @@ const Programs = () => {
                 </div>
               </div>
               <div className="modal-footer">
-                <button 
-                  type="button" 
-                  className="btn btn-primary" 
+                <button
+                  type="button"
+                  className="btn btn-primary"
                   onClick={() => {
                     setShowPreviewModal(false);
                     handleEditProgram(selectedProgram);
@@ -669,9 +669,9 @@ const Programs = () => {
                 >
                   Edit This Program
                 </button>
-                <button 
-                  type="button" 
-                  className="btn btn-secondary" 
+                <button
+                  type="button"
+                  className="btn btn-secondary"
                   onClick={() => setShowPreviewModal(false)}
                 >
                   Close
@@ -681,7 +681,7 @@ const Programs = () => {
           </div>
         </div>
       )}
-      
+
       {/* Modal Backdrop */}
       {(showViewDetailsModal || showPreviewModal) && (
         <div className="modal-backdrop fade show"></div>

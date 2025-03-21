@@ -5,8 +5,8 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import { useAuth } from '../context/AuthContext'
-
+import { useAuth } from '../../context/AuthContext'
+import '../Login/Login.css'
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
