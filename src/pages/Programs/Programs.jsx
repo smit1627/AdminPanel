@@ -1,35 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit, List, Eye, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Trash2 } from 'lucide-react';
 import '../Programs/Programs.css';
 
 const Programs = () => {
-  const [programs, setPrograms] = useState([
-    {
-      id: 1,
-      utilityName: 'COLUMBIA GAS OF VA',
-      programName: 'VA_COL_GAS_VAR_100%_Jan24',
-      startDate: '1/1/2024',
-      endDate: '',
-      active: true,
-      ratePlanDetails: [
-        { range: '0-100', rate: '0.56', unit: 'Therms' },
-        { range: '101+', rate: '0.48', unit: 'Therms' }
-      ]
-    },
-    {
-      id: 2,
-      utilityName: 'WASHINGTON GAS VA',
-      programName: 'VA_Washi_GAS_VAR_100%_Jan24',
-      startDate: '1/1/2024',
-      endDate: '',
-      active: true,
-      ratePlanDetails: [
-        { range: '0-150', rate: '0.59', unit: 'Therms' },
-        { range: '151+', rate: '0.51', unit: 'Therms' }
-      ]
-    }
-  ]);
-
+  const [programs, setPrograms] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showViewDetailsModal, setShowViewDetailsModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -44,6 +18,35 @@ const Programs = () => {
     endDate: '',
     ratePlanDetails: []
   });
+
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const savedPrograms = localStorage.getItem('programs');
+    if (savedPrograms) {
+      try {
+        const parsedPrograms = JSON.parse(savedPrograms);
+        if (Array.isArray(parsedPrograms)) {
+          setPrograms(parsedPrograms);
+        } else {
+          console.warn('Invalid data found in localStorage, resetting...');
+          localStorage.setItem('programs', JSON.stringify([])); // Reset to empty array if invalid
+        }
+      } catch (error) {
+        console.error('Error parsing localStorage data:', error);
+        localStorage.setItem('programs', JSON.stringify([])); // Handle parse errors
+      }
+    } else {
+      localStorage.setItem('programs', JSON.stringify([])); // Initialize empty array
+    }
+  }, []);
+
+
+  // Save to localStorage whenever programs change
+  useEffect(() => {
+    if (programs && programs.length > 0) {
+      localStorage.setItem('programs', JSON.stringify(programs));
+    }
+  }, [programs]);
 
   // Handle Create Program
   const handleCreateProgram = () => {
@@ -140,19 +143,23 @@ const Programs = () => {
     e.preventDefault();
 
     if (isEditing) {
-      // Update existing program
       setPrograms(programs.map(program =>
-        program.id === newProgram.id ? newProgram : program
+        program.id === newProgram.id
+          ? { ...newProgram, ratePlanDetails: newProgram.ratePlanDetails || [] }
+          : program
       ));
     } else {
-      // Add new program
-      const newId = Math.max(...programs.map(p => p.id)) + 1;
-      setPrograms([...programs, { ...newProgram, id: newId, active: true }]);
+      const newId = programs.length > 0 ? Math.max(...programs.map(p => p.id)) + 1 : 1;
+      setPrograms([
+        ...programs,
+        { ...newProgram, id: newId, ratePlanDetails: newProgram.ratePlanDetails || [] }
+      ]);
     }
 
     setShowCreateForm(false);
     setIsEditing(false);
   };
+
 
   // Format date for input fields
   const formatDateForInput = (dateString) => {
@@ -225,51 +232,59 @@ const Programs = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredPrograms.map((program) => (
-                    <tr key={program.id} className="table-row">
-                      <td className="utility-name">{program.utilityName}</td>
-                      <td>{program.programName}</td>
-                      <td>{program.startDate}</td>
-                      <td>{program.endDate || '—'}</td>
-                      <td>
-                        <span className={`badge ${program.active ? 'bg-success' : 'bg-secondary'}`}>
-                          {program.active ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="action-buttons">
-                          <button
-                            className="btn btn-sm btn-outline-primary me-1"
-                            title="Edit"
-                            onClick={() => handleEditProgram(program)}
-                          >
-                            <Edit size={18} />
-                          </button>
-                          <button
-                            className="btn btn-sm btn-outline-primary me-1"
-                            title="View Details"
-                            onClick={() => handleViewDetails(program)}
-                          >
-                            <List size={18} />
-                          </button>
-                          <button
-                            className="btn btn-sm btn-outline-primary me-1"
-                            title="Preview"
-                            onClick={() => handlePreview(program)}
-                          >
-                            <Eye size={18} />
-                          </button>
-                          <button
-                            className="btn btn-sm btn-outline-danger"
-                            title="Delete"
-                            onClick={() => handleDelete(program.id)}
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
+                  {filteredPrograms.length > 0 ? (
+                    filteredPrograms.map((program) => (
+                      <tr key={program.id} className="table-row">
+                        <td className="utility-name">{program.utilityName}</td>
+                        <td>{program.programName}</td>
+                        <td>{program.startDate}</td>
+                        <td>{program.endDate || '—'}</td>
+                        <td>
+                          <span className={`badge ${program.active ? 'bg-success' : 'bg-secondary'}`}>
+                            {program.active ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="action-buttons">
+                            <button
+                              className="btn btn-sm btn-outline-primary me-1"
+                              title="Edit"
+                              onClick={() => handleEditProgram(program)}
+                            >
+                              <Edit size={18} />
+                            </button>
+                            <button
+                              className="btn btn-sm btn-outline-primary me-1"
+                              title="View Details"
+                              onClick={() => handleViewDetails(program)}
+                            >
+                              <List size={18} />
+                            </button>
+                            <button
+                              className="btn btn-sm btn-outline-primary me-1"
+                              title="Preview"
+                              onClick={() => handlePreview(program)}
+                            >
+                              <Eye size={18} />
+                            </button>
+                            <button
+                              className="btn btn-sm btn-outline-danger"
+                              title="Delete"
+                              onClick={() => handleDelete(program.id)}
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        No programs found. Create a new program to get started.
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
