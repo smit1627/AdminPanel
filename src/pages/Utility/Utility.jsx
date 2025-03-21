@@ -41,37 +41,29 @@ const Utility = () => {
   });
 
   // Mock fetch utilities data (replace with actual API call)
+  // Replace the fetchUtilities function with this
   const fetchUtilities = async (page = 1, pageSize = 10, searchQuery = '') => {
     setLoading(true);
     try {
-      // Replace this with your actual API call
-      // const response = await api.get('/utilities', { params: { page, pageSize, search: searchQuery } });
-      // setUtilities(response.data.items);
-      // setPagination({...pagination, total: response.data.total, current: page})
+      // Get utilities from localStorage or return empty array if none exist
+      const storedUtilities = JSON.parse(localStorage.getItem('utilities')) || [];
 
-      // Mock data for demonstration
-      setTimeout(() => {
-        // Sample data - replace with your API response
-        const mockData = [
-          { id: 1, clientName: 'Client A', utilityName: 'Electricity', code1: 'ELEC001', code2: 'REG123', active: true, lastUpdated: '2025-03-10' },
-          { id: 2, clientName: 'Client B', utilityName: 'Water', code1: 'WAT002', code2: 'REG456', active: true, lastUpdated: '2025-03-09' },
-          { id: 3, clientName: 'Client C', utilityName: 'Gas', code1: 'GAS003', code2: 'REG789', active: false, lastUpdated: '2025-03-08' },
-          { id: 4, clientName: 'Client D', utilityName: 'Internet', code1: 'NET004', code2: 'REG101', active: true, lastUpdated: '2025-03-07' },
-          { id: 5, clientName: 'Client E', utilityName: 'Waste Management', code1: 'WST005', code2: 'REG112', active: false, lastUpdated: '2025-03-06' },
-        ];
+      // Filter based on search query if provided
+      const filteredData = storedUtilities.filter(item =>
+        searchQuery ?
+          item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.utilityName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.code1.toLowerCase().includes(searchQuery.toLowerCase()) :
+          true
+      );
 
-        const filteredData = mockData.filter(item =>
-          searchQuery ?
-            item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.utilityName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.code1.toLowerCase().includes(searchQuery.toLowerCase()) :
-            true
-        );
-
-        setUtilities(filteredData);
-        setPagination({ ...pagination, total: filteredData.length, current: page });
-        setLoading(false);
-      }, 500);
+      setUtilities(filteredData);
+      setPagination({
+        ...pagination,
+        total: filteredData.length,
+        current: page
+      });
+      setLoading(false);
     } catch (error) {
       console.error('Failed to fetch utilities:', error);
       message.error('Failed to load utilities data');
@@ -102,13 +94,30 @@ const Utility = () => {
 
   const handleSubmit = async (values) => {
     try {
+      // Get existing utilities from localStorage
+      const storedUtilities = JSON.parse(localStorage.getItem('utilities')) || [];
+
       if (editingRecord) {
-        // Replace with your actual API call for updating
-        // const response = await api.put(`/utilities/${editingRecord.id}`, values);
+        // Update existing utility
+        const updatedUtilities = storedUtilities.map(utility =>
+          utility.id === editingRecord.id
+            ? { ...utility, ...values, lastUpdated: new Date().toISOString().split('T')[0] }
+            : utility
+        );
+
+        localStorage.setItem('utilities', JSON.stringify(updatedUtilities));
         message.success('Utility updated successfully');
       } else {
-        // Replace with your actual API call for creating
-        // const response = await api.post('/utilities', values);
+        // Create new utility with unique ID and today's date
+        const newUtility = {
+          id: Date.now(), // Use timestamp as unique ID
+          ...values,
+          lastUpdated: new Date().toISOString().split('T')[0]
+        };
+
+        // Add to stored utilities and save back to localStorage
+        storedUtilities.push(newUtility);
+        localStorage.setItem('utilities', JSON.stringify(storedUtilities));
         message.success('Utility created successfully');
       }
 
@@ -149,8 +158,15 @@ const Utility = () => {
 
   const handleDelete = async (id) => {
     try {
-      // Replace with your actual API call
-      // await api.delete(`/utilities/${id}`);
+      // Get existing utilities from localStorage
+      const storedUtilities = JSON.parse(localStorage.getItem('utilities')) || [];
+
+      // Filter out the utility to delete
+      const updatedUtilities = storedUtilities.filter(utility => utility.id !== id);
+
+      // Save back to localStorage
+      localStorage.setItem('utilities', JSON.stringify(updatedUtilities));
+
       message.success('Utility deleted successfully');
       fetchUtilities(pagination.current, pagination.pageSize, searchText);
     } catch (error) {
