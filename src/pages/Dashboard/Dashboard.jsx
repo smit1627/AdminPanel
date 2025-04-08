@@ -3,7 +3,7 @@ import Stats from '../../components/Dashboard/Stats';
 import Charts from '../../components/Dashboard/Charts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/Sidebar/Sidebar';
 import '../Dashboard/Dashboard.css';
 
 const Dashboard = () => {
