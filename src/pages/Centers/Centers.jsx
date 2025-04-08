@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { SearchIcon, PlusIcon, PencilIcon, EyeIcon, TrashIcon, XIcon } from 'lucide-react';
+import { SearchIcon, PlusIcon, PencilIcon, EyeIcon, TrashIcon } from 'lucide-react';
+import { X as XIcon, Save as SaveIcon, ChevronDown as ChevronDownIcon, Upload as UploadIcon, Image as ImageIcon, PlusCircle as PlusCircleIcon } from "lucide-react";
 import '../Centers/Centers.css';
 
 const Centers = () => {
@@ -255,144 +256,197 @@ const Centers = () => {
 
       {/* Create Center Modal */}
       {showCreateModal && (
-        <div className="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="modal-content bg-white rounded-lg w-full max-w-lg shadow-lg animate-fadeIn">
-            <div className="modal-header p-4 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-800">Create Center</h2>
-              <button className="close-button text-gray-600 hover:text-gray-900" onClick={() => setShowCreateModal(false)}>
-                <XIcon size={18} />
+        <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl w-full max-w-lg shadow-xl animate-fadeIn overflow-hidden">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50">
+              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+                <PlusCircleIcon size={22} className="text-blue-500 mr-2" />
+                Create Center
+              </h2>
+              <button
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-full hover:bg-slate-100"
+                onClick={() => setShowCreateModal(false)}
+              >
+                <XIcon size={20} />
               </button>
             </div>
-            <div className="modal-body p-6">
-              <form onSubmit={handleCreateCenter}>
-                <div className="form-group mb-4">
-                  <label htmlFor="name" className="form-label text-gray-700">Name <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={newCenter.name}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  />
-                </div>
 
-                <div className="form-group mb-4">
-                  <label htmlFor="address" className="form-label text-gray-700">Address <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={newCenter.address}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  />
-                </div>
-
-                <div className="form-group mb-4">
-                  <label htmlFor="city" className="form-label text-gray-700">City <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value={newCenter.city}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  />
-                </div>
-
-                <div className="form-group mb-4">
-                  <label htmlFor="state" className="form-label text-gray-700">State <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    id="state"
-                    name="state"
-                    value={newCenter.state}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  />
-                </div>
-
-                <div className="form-group mb-4">
-                  <label htmlFor="zipCode" className="form-label text-gray-700">ZipCode <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    id="zipCode"
-                    name="zipCode"
-                    value={newCenter.zipCode}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  />
-                </div>
-
-                <div className="form-group mb-4">
-                  <label htmlFor="country" className="form-label text-gray-700">Country <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={newCenter.country}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  />
-                </div>
-
-                <div className="form-group mb-4">
-                  <label htmlFor="client" className="form-label text-gray-700">Client <span className="text-red-500">*</span></label>
-                  <select
-                    id="client"
-                    name="client"
-                    value={newCenter.client}
-                    onChange={handleInputChange}
-                    required
-                    className="form-control border-gray-300 p-3 rounded-md w-full"
-                  >
-                    <option value="Outright Software">Outright Software</option>
-                    <option value="Hardik Shah 1">Hardik Shah 1</option>
-                    <option value="Dhaval Vora">Dhaval Vora</option>
-                    <option value="Sunsea Energy">Sunsea Energy</option>
-                    <option value="XYZ Centers">XYZ Centers</option>
-                  </select>
-                </div>
-
-                <div className="form-group mb-4">
-                  <label htmlFor="logo" className="form-label text-gray-700">Logo</label>
-                  <div className="file-upload flex flex-col items-start">
+            {/* Modal Body */}
+            <div className="p-6 max-h-[70vh] overflow-y-auto bg-white">
+              <form onSubmit={handleCreateCenter} className="space-y-5">
+                {/* Form Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+                      Center Name <span className="text-rose-500">*</span>
+                    </label>
                     <input
-                      type="file"
-                      id="logo"
-                      name="logo"
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      onChange={handleFileChange}
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={newCenter.name}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Enter center name"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800"
                     />
-                    <button
-                      type="button"
-                      className="choose-file bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-                      onClick={() => document.getElementById('logo').click()}
-                    >
-                      Choose File
-                    </button>
-                    <span className="file-name text-gray-600 mt-2">{fileName}</span>
+                  </div>
+
+                  <div className="col-span-2">
+                    <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-1">
+                      Address <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      name="address"
+                      value={newCenter.address}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Street address"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="city" className="block text-sm font-medium text-slate-700 mb-1">
+                      City <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      value={newCenter.city}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="City"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="state" className="block text-sm font-medium text-slate-700 mb-1">
+                      State <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      value={newCenter.state}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="State"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="zipCode" className="block text-sm font-medium text-slate-700 mb-1">
+                      Zip Code <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="zipCode"
+                      name="zipCode"
+                      value={newCenter.zipCode}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="ZIP / Postal code"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="country" className="block text-sm font-medium text-slate-700 mb-1">
+                      Country <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="country"
+                      name="country"
+                      value={newCenter.country}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Country"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <label htmlFor="client" className="block text-sm font-medium text-slate-700 mb-1">
+                      Client <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="client"
+                        name="client"
+                        value={newCenter.client}
+                        onChange={handleInputChange}
+                        required
+                        className="appearance-none w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-colors bg-white text-slate-800 pr-10"
+                      >
+                        <option value="" disabled>Select client</option>
+                        <option value="Outright Software">Outright Software</option>
+                        <option value="Hardik Shah 1">Hardik Shah 1</option>
+                        <option value="Dhaval Vora">Dhaval Vora</option>
+                        <option value="Sunsea Energy">Sunsea Energy</option>
+                        <option value="XYZ Centers">XYZ Centers</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+                        <ChevronDownIcon size={18} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-span-2">
+                    <label htmlFor="logo" className="block text-sm font-medium text-slate-700 mb-1">
+                      Logo
+                    </label>
+                    <div className="mt-1 flex items-center">
+                      <input
+                        type="file"
+                        id="logo"
+                        name="logo"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                      />
+                      <div className="flex-1">
+                        <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 flex flex-col items-center justify-center bg-slate-50 cursor-pointer hover:bg-blue-50 transition-colors" onClick={() => document.getElementById('logo').click()}>
+                          <UploadIcon size={24} className="text-blue-400 mb-2" />
+                          <div className="text-sm text-slate-600">
+                            {fileName ? (
+                              <div className="flex items-center">
+                                <ImageIcon size={16} className="mr-1 text-blue-500" />
+                                {fileName}
+                              </div>
+                            ) : (
+                              <span>Click to upload logo (optional)</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="modal-footer p-4 border-t border-gray-200 flex justify-between">
-                  <button type="submit" className="create-button bg-green-600 text-white p-3 rounded-md hover:bg-green-700">
-                    Create
-                  </button>
+                {/* Form Actions */}
+                <div className="pt-4 border-t border-slate-100 flex justify-between gap-4 mt-6">
                   <button
                     type="button"
-                    className="back-button bg-gray-100 text-gray-700 p-3 rounded-md hover:bg-gray-200"
+                    className="px-4 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition-colors flex items-center justify-center"
                     onClick={() => setShowCreateModal(false)}
                   >
-                    Back to List
+                    <XIcon size={18} className="mr-1.5" />
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2.5 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors flex items-center justify-center shadow-sm"
+                  >
+                    <SaveIcon size={18} className="mr-1.5" />
+                    Create Center
                   </button>
                 </div>
               </form>
